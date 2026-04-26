@@ -4,6 +4,7 @@
 
 - Repository: *(this GitHub repo)*
 - Architecture video: 
+- Presentation script (EN, 5-6 min): `docs/PRESENTATION_SCRIPT_EN.md`
 
 This repository implements the assignment scaffold from **Boston University EC530 Project 2**:
 
