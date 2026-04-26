@@ -1,52 +1,50 @@
-# EC530 Project 2: Event-Driven Image Annotation and Retrieval System
-# Boyang Zhang theostnc@bu.edu
+# EC530 Project 2
+## Event-Driven Image Annotation and Retrieval System
+
+## Student Information
+
+- Name: Boyang Zhang
+- Email: theostnc@bu.edu
+- Course: EC530 Principles of Software Engineering
+- University: Boston University
+
 ## Submission Links
 
-- Repository: *(this GitHub repo)*
-- Architecture video: 
-- Presentation script (EN, 5-6 min): `docs/PRESENTATION_SCRIPT_EN.md`
-- Live code walkthrough flow: `docs/PRESENTATION_FLOW_WITH_CODE_CUES.md`
+- Repository: [GitHub Repository](https://github.com/byzhang811/ec530-event-driven-image-retrieval-system)
+- Architecture Video: [Add your video link here](PASTE_VIDEO_LINK_HERE)
 
-This repository implements the assignment scaffold from **Boston University EC530 Project 2**:
+## Project Summary
 
-- Event-driven architecture with pub-sub topics
-- Document database model for variable/nested annotations
-- Vector index integration for similarity retrieval
-- Deterministic event generator and replay flow
-- Unit tests focused on **idempotency, robustness, eventual consistency, and query correctness**
+This project implements an event-driven retrieval pipeline where image processing components communicate through pub-sub events instead of direct synchronous calls.
 
-## Assignment Focus (From Slides)
+The design follows the assignment focus:
+- modular architecture with clear service boundaries
+- message-based integration with Redis pub-sub support
+- document-style annotation storage for nested and variable fields
+- vector indexing for similarity retrieval
+- strong unit testing with deterministic replay and failure injection
 
-- You are graded on architecture, testability, and design justification.
-- Do not train models.
-- Do not implement ANN algorithms.
-- Use provided embeddings/simple model and focus on system integration.
-- Suggested broker is Redis pub-sub (any bus is acceptable).
+## What This Project Includes
 
-Important date called out in the slides:
-- **Tuesday, April 14, 2026**: project structure + message definitions + Redis topics/messages + testing.
+- Asynchronous event flow for image ingestion, annotation, embedding, and query
+- Shared event schema and topic-specific payload validation
+- In-memory event bus for deterministic testing
+- Redis event bus adapter for real runtime integration
+- Failure-mode testing for duplicates, delays, drops, and subscriber downtime
+- Reproducible runtime evidence logs and screenshots
 
-## Architecture
+## Architecture Overview
 
 Services:
-- `UploadService`: receives uploads and publishes `image.submitted`.
-- `InferenceService`: consumes `image.submitted`, simulates detections, publishes `inference.completed`.
-- `DocumentDBService`: owns annotation documents, consumes `inference.completed`, publishes `annotation.stored`.
-- `EmbeddingService`: consumes `annotation.stored`, builds deterministic embeddings, publishes `embedding.created`.
-- `VectorIndexService`: owns vector records, consumes `embedding.created`, serves similarity search.
-- `QueryService`: consumes `query.submitted`, runs retrieval through `VectorIndexService`, publishes `query.completed`.
-- `CLIService`: simulates user uploads and queries, consumes `query.completed`.
+- `UploadService`: publishes `image.submitted`
+- `InferenceService`: consumes `image.submitted`, publishes `inference.completed`
+- `DocumentDBService`: owns annotation documents, publishes `annotation.stored`
+- `EmbeddingService`: consumes `annotation.stored`, publishes `embedding.created`
+- `VectorIndexService`: owns vector index records, serves similarity retrieval
+- `QueryService`: consumes `query.submitted`, publishes `query.completed`
+- `CLIService`: user-facing simulation for uploads and queries
 
-### Data ownership rule
-
-Only one service owns each data store:
-- Document DB state is owned only by `DocumentDBService`.
-- Vector index state is owned only by `VectorIndexService`.
-
-CLI and API paths do not write directly to stores.
-
-## Topics
-
+Core topics:
 - `image.submitted`
 - `inference.completed`
 - `annotation.stored`
@@ -55,9 +53,15 @@ CLI and API paths do not write directly to stores.
 - `query.submitted`
 - `query.completed`
 
+## Data Ownership Rules
+
+- Document DB state is owned only by `DocumentDBService`.
+- Vector index state is owned only by `VectorIndexService`.
+- CLI and API flows do not bypass services to write stores directly.
+
 ## Event Contract
 
-All messages follow the shared schema:
+All messages use this top-level contract:
 
 ```json
 {
@@ -74,50 +78,71 @@ All messages follow the shared schema:
 }
 ```
 
-Topic-specific payload requirements (publisher/subscriber ownership) are defined in:
+Topic-level payload requirements are defined in:
 - `src/retrieval_system/message_definitions.py`
-- `docs/DELIVERABLES.md`
 
-## Event Bus Options
+## Setup
 
-- `InMemoryEventBus`: deterministic local testing; supports delayed delivery, dropped topics, and pause/resume subscriptions for failure injection.
-- `RedisEventBus`: adapter for Redis pub-sub channels.
+```bash
+python3 -m pip install --user redis
+brew install redis
+brew services start redis
+```
 
-## Deterministic Event Generator
+## How To Run
 
-`EventGenerator` supports:
-- deterministic mode with seed
-- replay mode from JSONL event dataset (`data/sample_events.jsonl`)
-
-## Quick Start
+Run unit tests:
 
 ```bash
 python3 -m pytest -q
 ```
 
-Run an end-to-end demo in memory:
+Run end-to-end demo with in-memory bus:
 
 ```bash
 python3 scripts/run_demo.py --broker memory
 ```
 
-Run an end-to-end demo on Redis pub-sub:
+Run end-to-end demo with Redis bus:
 
 ```bash
-brew install redis
-brew services start redis
-python3 -m pip install redis
 python3 scripts/run_demo.py --broker redis
 ```
 
-Run the full submission check and generate screenshot evidence:
+Run full submission verification:
 
 ```bash
 ./scripts/check_submission.sh
 python3 scripts/generate_terminal_screenshots.py
 ```
 
-## Repository Layout
+## Runtime Evidence
+
+Generated evidence files:
+- Redis status log: `artifacts/logs/01_redis_status.log`
+- Pytest log: `artifacts/logs/02_pytest.log`
+- In-memory demo log: `artifacts/logs/03_demo_memory.log`
+- Redis demo log: `artifacts/logs/04_demo_redis.log`
+
+Generated screenshots:
+- `artifacts/screenshots/01_redis_status.png`
+- `artifacts/screenshots/02_pytest.png`
+- `artifacts/screenshots/03_demo_memory.png`
+- `artifacts/screenshots/04_demo_redis.png`
+
+## Test Coverage Summary
+
+The test suite validates:
+- event schema and payload contracts
+- deterministic generator and replay behavior
+- end-to-end pipeline behavior
+- idempotency under duplicate events
+- malformed event robustness
+- delayed delivery eventual consistency
+- dropped message and subscriber downtime recovery
+- query results consistent with processed state
+
+## Repository Structure
 
 ```text
 src/retrieval_system/
@@ -134,4 +159,10 @@ tests/
 data/
 docs/
 scripts/
+artifacts/
 ```
+
+## Notes
+
+This implementation intentionally does not train models or implement ANN algorithms.  
+It emphasizes system integration and software engineering quality, aligned with the assignment requirements.
