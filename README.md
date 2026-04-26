@@ -3,7 +3,7 @@
 ## Submission Links
 
 - Repository: *(this GitHub repo)*
-- Architecture video: `TBD (to be added after recording)`
+- Architecture video: 
 
 This repository implements the assignment scaffold from **Boston University EC530 Project 2**:
 
