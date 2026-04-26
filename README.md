@@ -11,7 +11,7 @@
 ## Submission Links
 
 - Repository: [GitHub Repository](https://github.com/byzhang811/ec530-event-driven-image-retrieval-system)
-- Architecture Video: [Add your video link here](PASTE_VIDEO_LINK_HERE)
+- Architecture Video: [https://drive.google.com/file/d/1vKa4GqEkVEIxmyJ1I3JNB3u-6jbODmYo/view?usp=drive_link)
 
 ## Project Summary
 
