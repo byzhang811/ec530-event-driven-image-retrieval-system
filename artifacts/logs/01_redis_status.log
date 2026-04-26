@@ -1,0 +1,8 @@
+$ brew services start redis
+Service `redis` already started, use `brew services restart redis` to restart.
+
+$ redis-cli ping
+PONG
+
+$ brew services list | rg "^redis\\s"
+redis started         byzhang ~/Library/LaunchAgents/homebrew.mxcl.redis.plist

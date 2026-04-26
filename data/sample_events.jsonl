@@ -1,0 +1,3 @@
+{"type":"publish","topic":"image.submitted","event_id":"evt_1042","payload":{"image_id":"img_1042","path":"images/street_1042.jpg","source":"camera_A","timestamp":"2026-04-07T14:33:00Z"},"timestamp":"2026-04-07T14:33:00Z"}
+{"type":"publish","topic":"image.submitted","event_id":"evt_1043","payload":{"image_id":"img_1043","path":"images/street_1043.jpg","source":"camera_A","timestamp":"2026-04-07T14:33:01Z"},"timestamp":"2026-04-07T14:33:01Z"}
+{"type":"publish","topic":"image.submitted","event_id":"evt_1044","payload":{"image_id":"img_1044","path":"images/street_1044.jpg","source":"camera_B","timestamp":"2026-04-07T14:33:02Z"},"timestamp":"2026-04-07T14:33:02Z"}

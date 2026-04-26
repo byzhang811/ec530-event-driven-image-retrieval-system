@@ -1,0 +1,76 @@
+$ python3 scripts/run_demo.py --broker redis
+Text Query Result:
+{
+  "query_id": "qry_37dd4b068cf8",
+  "query_type": "text",
+  "query": "red car on street",
+  "top_k": 3,
+  "results": [
+    {
+      "id": "img_demo_1#obj1",
+      "score": 0.316613,
+      "metadata": {
+        "image_id": "img_demo_1",
+        "kind": "object",
+        "label": "bicycle",
+        "conf": 0.93
+      }
+    },
+    {
+      "id": "img_demo_1",
+      "score": 0.233403,
+      "metadata": {
+        "image_id": "img_demo_1",
+        "kind": "image"
+      }
+    },
+    {
+      "id": "img_demo_2#obj0",
+      "score": 0.20504,
+      "metadata": {
+        "image_id": "img_demo_2",
+        "kind": "object",
+        "label": "car",
+        "conf": 0.97
+      }
+    }
+  ]
+}
+
+Image Query Result:
+{
+  "query_id": "qry_f5b772be6d1d",
+  "query_type": "image",
+  "query": "img_demo_1",
+  "top_k": 3,
+  "results": [
+    {
+      "id": "img_demo_1",
+      "score": 1.0,
+      "metadata": {
+        "image_id": "img_demo_1",
+        "kind": "image"
+      }
+    },
+    {
+      "id": "img_demo_1#obj2",
+      "score": 0.437935,
+      "metadata": {
+        "image_id": "img_demo_1",
+        "kind": "object",
+        "label": "dog",
+        "conf": 0.71
+      }
+    },
+    {
+      "id": "img_demo_3#obj0",
+      "score": 0.344091,
+      "metadata": {
+        "image_id": "img_demo_3",
+        "kind": "object",
+        "label": "person",
+        "conf": 0.98
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+[project]
+name = "event-driven-image-retrieval"
+version = "0.1.0"
+description = "Event-driven image annotation and retrieval system scaffold for EC530 Project 2."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+redis = ["redis>=5.0.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
